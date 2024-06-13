@@ -209,7 +209,7 @@ def main(args):
                 best_class_acc = class_acc
             log_string('Test Instance Accuracy: %f, Class Accuracy: %f' % (instance_acc, class_acc))
             log_string('Best Instance Accuracy: %f, Class Accuracy: %f' % (best_instance_acc, best_class_acc))
-
+    
             if (instance_acc >= best_instance_acc):
                 logger.info('Save model...')
                 savepath = str(checkpoints_dir) + '/best_model.pth'
@@ -223,7 +223,6 @@ def main(args):
                 }
                 torch.save(state, savepath)
             global_epoch += 1
-
     logger.info('End of training...')
 
 
