@@ -19,6 +19,9 @@ from pathlib import Path
 from tqdm import tqdm
 from data_utils.ModelNetDataLoader import ModelNetDataLoader
 
+from timeit import default_timer as timer
+from myutils import print_train_time
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = BASE_DIR
 sys.path.append(os.path.join(ROOT_DIR, 'models'))
@@ -166,6 +169,7 @@ def main(args):
 
     '''TRANING'''
     logger.info('Start training...')
+    train_time_start = timer()
     for epoch in range(start_epoch, args.epoch):
         log_string('Epoch %d (%d/%s):' % (global_epoch + 1, epoch + 1, args.epoch))
         mean_correct = []
@@ -223,6 +227,13 @@ def main(args):
                 }
                 torch.save(state, savepath)
             global_epoch += 1
+    # Calculate training time
+    train_time_end = timer()
+    total_train_time_model = print_train_time(
+        start=train_time_start,
+        end= train_time_end,
+        device='cpu' if args.use_cpu else 'gpu'
+    )
     logger.info('End of training...')
 
 
